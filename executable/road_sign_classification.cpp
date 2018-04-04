@@ -58,27 +58,16 @@ void loadImages(const string& folder_name,
     loadImageFileIntoDLibImages_one_dir(train_positive_folder, training_images, training_labels, 1);
     loadImageFileIntoDLibImages_one_dir(train_negative_folder, training_images, training_labels, 0);
 
+    // image_window my_window1(training_images[0], "image 0");
+    // my_window1.wait_until_closed();
+
+    // image_window my_window2(training_images[10], "image 10");
+    // my_window2.wait_until_closed();
+
     testing_images = std::vector<matrix<rgb_pixel> >();
     loadImageFileIntoDLibImages_one_dir(test_positive_folder, testing_images, testing_labels, 1);
     loadImageFileIntoDLibImages_one_dir(test_negative_folder, testing_images, testing_labels, 0);  
 
-
-
-    // train_positive
-    // getdir(train_positive_folder, train_positive_files);
-
-
-
-
-    // for (int i=0; i<files.size(); i++) {
-    //     //cout << files[i].c_str() <<endl;
-    //     if (files[i].c_str() == "train") {
-    //         std::vector<string> train_files = std::vector<string>();
-    //         getdir("train", train_files);
-            
-    //     } else {cout << "cannot find \"train\" directory!" << endl;}
-
-    // }
 }
 
 void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_pixel> >& dlib_images,
@@ -87,9 +76,6 @@ void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_p
     std::vector<string> files = std::vector<string>();
     getdir(folder, files);
 
-    // dlib_images.resize(files.size());
-    // dlib_images.resize(files.size());
-    
 
     for(int i=0; i<files.size(); i++) {
 
@@ -119,6 +105,7 @@ void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_p
             cout << "exception thrown: " << e.what() << endl;
         }
     }
+
 
     cout << "images size is " << dlib_images.size() << endl;
     cout << "labels size is " << dlib_labels.size() << endl;
@@ -154,8 +141,88 @@ int main() {
 
     loadImages(input_dir, training_images, training_labels, testing_images, testing_labels);
 
-    cout << training_images.size() << endl;
-    cout << training_labels.size() << endl;
+    cout << "training labels:" << endl;
+    for (int i=0; i<training_labels.size(); i++) {
+        
+        cout << training_labels[i] << ",";
+    }
+    cout << endl;
+
+    // cout << training_images.size() << endl;
+    // cout << training_labels.size() << endl;
+
+    // define net
+    using net_type = loss_multiclass_log<
+                                fc<2,        
+                                relu<fc<84,   
+                                relu<fc<120,  
+                                max_pool<2,2,2,2,relu<con<16,5,5,1,1,
+                                max_pool<2,2,2,2,relu<con<6,5,5,1,1,
+                                input<matrix<rgb_pixel>> 
+                                >>>>>>>>>>>>;
+
+    net_type net;
+    
+    dnn_trainer<net_type> trainer(net);
+    trainer.set_learning_rate(0.01);
+    trainer.set_min_learning_rate(0.00001);
+    trainer.set_mini_batch_size(256);
+    // trainer.set_mini_batch_size(512);
+    trainer.be_verbose();
+
+    // save intermediate results
+    trainer.set_synchronization_file("road_sign_sync", std::chrono::seconds(20));
+
+    // train
+    trainer.train(training_images, training_labels);
+
+    // 
+    net.clean();
+    serialize("road_sign_network.dat") << net;
+
+    // train and test results
+
+    std::vector<unsigned long> predicted_labels = net(training_images);
+    int num_right = 0;
+    int num_wrong = 0;
+    // And then let's see if it classified them correctly.
+     cout << "predicted_labels:" << endl;
+    for (size_t i = 0; i < training_images.size(); ++i)
+    {
+        cout << predicted_labels[i] << ",";
+        if (predicted_labels[i] == training_labels[i])
+            ++num_right;
+        else {
+            image_window my_window2(training_images[i], "image is " + training_labels[i]);
+            my_window2.wait_until_closed();
+            ++num_wrong;
+        }
+        
+    }
+    cout << "training num_right: " << num_right << endl;
+    cout << "training num_wrong: " << num_wrong << endl;
+    cout << "training accuracy:  " << num_right/(double)(num_right+num_wrong) << endl;
+
+    // Let's also see if the network can correctly classify the testing images.  Since
+    // MNIST is an easy dataset, we should see at least 99% accuracy.
+    predicted_labels = net(testing_images);
+    num_right = 0;
+    num_wrong = 0;
+    for (size_t i = 0; i < testing_images.size(); ++i)
+    {
+        if (predicted_labels[i] == testing_labels[i])
+            ++num_right;
+        else
+            ++num_wrong;
+        
+    }
+    cout << "testing num_right: " << num_right << endl;
+    cout << "testing num_wrong: " << num_wrong << endl;
+    cout << "testing accuracy:  " << num_right/(double)(num_right+num_wrong) << endl;
+
+
+    // output to xml
+    net_to_xml(net, "lenet2.xml");
 
     return 0;
 }

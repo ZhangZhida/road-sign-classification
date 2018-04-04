@@ -47,6 +47,12 @@ int main(int argc, char** argv) try
     std::vector<unsigned long>         testing_labels;
     load_mnist_dataset(argv[1], training_images, training_labels, testing_images, testing_labels);
 
+    cout << "training_labels" << endl;
+    for (int i=0; i<training_labels.size(); i++) {
+        
+        cout << training_labels[i] << ",";
+    }
+
 
     // Now let's define the LeNet.  Broadly speaking, there are 3 parts to a network
     // definition.  The loss layer, a bunch of computational layers, and then an input
