@@ -19,6 +19,8 @@
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include "../include/FileOperation.h"
+
 //#include <io.h>
 
 using namespace std;
@@ -29,7 +31,7 @@ void loadImages(const string& folder_name,
     std::vector<unsigned long>& training_labels, 
     std::vector<matrix<rgb_pixel> > & testing_images,
     std::vector<unsigned long>& testing_labels);
-int getdir (string dir, std::vector<string> &files);
+// int getdir (string dir, std::vector<string> &files);
 void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_pixel> >& dlib_images, 
     std::vector<unsigned long>& dlib_labels, unsigned long label);
 
@@ -114,21 +116,21 @@ void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_p
 
 }
 
-int getdir (string dir, std::vector<string> &files)
-{
-    DIR *dp;
-    struct dirent *dirp;
-    if((dp  = opendir(dir.c_str())) == NULL) {
-        cout << "Error(" << errno << ") opening " << dir << endl;
-        return errno;
-    }
+// int getdir (string dir, std::vector<string> &files)
+// {
+//     DIR *dp;
+//     struct dirent *dirp;
+//     if((dp  = opendir(dir.c_str())) == NULL) {
+//         cout << "Error(" << errno << ") opening " << dir << endl;
+//         return errno;
+//     }
 
-    while ((dirp = readdir(dp)) != NULL) {
-        files.push_back(string(dirp->d_name));
-    }
-    closedir(dp);
-    return 0;
-}
+//     while ((dirp = readdir(dp)) != NULL) {
+//         files.push_back(string(dirp->d_name));
+//     }
+//     closedir(dp);
+//     return 0;
+// }
 
 int main() {
 
@@ -152,11 +154,20 @@ int main() {
     // cout << training_labels.size() << endl;
 
     // define net
+    // using net_type = loss_multiclass_log<
+    //                             fc<2,       
+    //                             relu<fc<84,   
+    //                             relu<fc<120,  
+    //                             max_pool<2,2,2,2,relu<con<16,5,5,1,1,
+    //                             max_pool<2,2,2,2,relu<con<6,5,5,1,1,
+    //                             input<matrix<rgb_pixel>> 
+    //                             >>>>>>>>>>>>;
+
     using net_type = loss_multiclass_log<
-                                fc<2,        
+                                fc<2,       
                                 relu<fc<84,   
-                                relu<fc<120,  
-                                max_pool<2,2,2,2,relu<con<16,5,5,1,1,
+                                relu<fc<120, 
+                                max_pool<2,2,2,2,relu<con<28,5,5,1,1,
                                 max_pool<2,2,2,2,relu<con<6,5,5,1,1,
                                 input<matrix<rgb_pixel>> 
                                 >>>>>>>>>>>>;
@@ -193,7 +204,8 @@ int main() {
         if (predicted_labels[i] == training_labels[i])
             ++num_right;
         else {
-            image_window my_window2(training_images[i], "image is " + training_labels[i]);
+            string name = "" + training_labels[i];
+            image_window my_window2(training_images[i], name);
             my_window2.wait_until_closed();
             ++num_wrong;
         }

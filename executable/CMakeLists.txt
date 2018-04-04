@@ -3,14 +3,16 @@ cmake_minimum_required(VERSION 2.8.12)
 project(executable)
 
 # OpenCV support
-set(CMAKE_PREFIX_PATH "/home/zhida/Downloads/OpenCV/build")
-find_package(OpenCV 3.2.0 REQUIRED)
+#set(CMAKE_PREFIX_PATH "/home/zhida/Downloads/OpenCV/build")
+#   find_package(OpenCV 3.2.0 REQUIRED)
 
-add_subdirectory(../../dlib dlib_build)
+#include directory
+#include_directories("../../include")
+
 
 
 add_executable(road_sign_classification road_sign_classification.cpp)
-target_link_libraries(road_sign_classification dlib::dlib ${OpenCV_LIBS})
+target_link_libraries(road_sign_classification FileOperation dlib::dlib ${OpenCV_LIBS})
 
 add_executable(dnn_introduction_ex dnn_introduction_ex.cpp)
 target_link_libraries(dnn_introduction_ex dlib::dlib ${OpenCV_LIBS})
