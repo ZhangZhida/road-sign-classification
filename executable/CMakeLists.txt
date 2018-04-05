@@ -12,7 +12,7 @@ project(executable)
 
 
 add_executable(road_sign_classification road_sign_classification.cpp)
-target_link_libraries(road_sign_classification FileOperation dlib::dlib ${OpenCV_LIBS})
+target_link_libraries(road_sign_classification FileOperation ImageIO dlib::dlib ${OpenCV_LIBS})
 
 add_executable(dnn_introduction_ex dnn_introduction_ex.cpp)
 target_link_libraries(dnn_introduction_ex dlib::dlib ${OpenCV_LIBS})
