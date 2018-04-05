@@ -12,6 +12,8 @@ include_directories(include)
 
 #set(CMAKE_PREFIX_PATH "/home/cuizhou/Downloads/opencv-3.3.0/build_cuda")
 
+
+
 set(CMAKE_PREFIX_PATH "/home/zhida/Downloads/OpenCV/build")
 find_package(OpenCV 3.2.0 REQUIRED)
 

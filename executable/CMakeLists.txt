@@ -10,12 +10,19 @@ project(executable)
 #include_directories("../../include")
 
 
-
 add_executable(road_sign_classification road_sign_classification.cpp)
 target_link_libraries(road_sign_classification FileOperation ImageIO dlib::dlib ${OpenCV_LIBS})
 
 add_executable(dnn_introduction_ex dnn_introduction_ex.cpp)
 target_link_libraries(dnn_introduction_ex dlib::dlib ${OpenCV_LIBS})
 
+add_executable(dnn_mmod_find_cars2_ex dnn_mmod_find_cars2_ex.cpp)
+target_link_libraries(dnn_mmod_find_cars2_ex dlib::dlib)
+
+add_executable(dnn_mmod_find_cars_ex dnn_mmod_find_cars_ex.cpp)
+target_link_libraries(dnn_mmod_find_cars_ex dlib::dlib)
+
+add_executable(dnn_mmod_train_find_cars_ex dnn_mmod_train_find_cars_ex.cpp)
+target_link_libraries(dnn_mmod_train_find_cars_ex dlib::dlib)
 
 
