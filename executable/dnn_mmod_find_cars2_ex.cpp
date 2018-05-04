@@ -60,7 +60,7 @@ int main() try
 
     matrix<rgb_pixel> img;
     //load_image(img, "../../executable/mmod_cars_test_image2.jpg");
-    load_image(img, "/home/zhida/Documents/Data/testimages/10.jpg");
+    load_image(img, "/home/zhida/Documents/Data/testimages/small-10.jpg");
 
     image_window win;
     win.set_image(img);

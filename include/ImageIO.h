@@ -20,6 +20,12 @@ void loadImages(const string& folder_name,
     std::vector<unsigned long>& training_labels, 
     std::vector<matrix<rgb_pixel> > & testing_images,
     std::vector<unsigned long>& testing_labels);
+
+void loadImagesMulticlass(const string& folder_name, 
+    std::vector<matrix<rgb_pixel> > & training_images,
+    std::vector<unsigned long>& training_labels, 
+    std::vector<matrix<rgb_pixel> > & testing_images,
+    std::vector<unsigned long>& testing_labels);
 // int getdir (string dir, std::vector<string> &files);
 void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_pixel> >& dlib_images, 
     std::vector<unsigned long>& dlib_labels, unsigned long label);

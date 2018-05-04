@@ -14,8 +14,8 @@ include_directories(include)
 
 
 
-set(CMAKE_PREFIX_PATH "/home/zhida/Downloads/OpenCV/build")
-find_package(OpenCV 3.2.0 REQUIRED)
+set(CMAKE_PREFIX_PATH "/home/zhida/Downloads/OpenCV-3.4.1/opencv-3.4.1/build")
+find_package(OpenCV 3.4.1 REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(executable)

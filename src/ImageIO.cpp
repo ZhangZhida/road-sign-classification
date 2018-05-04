@@ -38,6 +38,81 @@ void loadImages(const string& folder_name,
 
 }
 
+void loadImagesMulticlass(const string& folder_name, 
+    
+    std::vector<matrix<rgb_pixel> > & training_images,
+    std::vector<unsigned long>& training_labels, 
+    std::vector<matrix<rgb_pixel> > & testing_images,
+    std::vector<unsigned long>& testing_labels) {
+
+    std::vector<unsigned long> classes = std::vector<unsigned long>();
+    std::vector<std::string> classes_name = std::vector<std::string>();
+    int classes_num = 15;
+    classes_name.push_back("height");
+    classes_name.push_back("limit_shiru");
+    classes_name.push_back("limit_tongxing");
+    classes_name.push_back("speed_zuidi_50");
+    classes_name.push_back("speed_zuidi_60");
+    classes_name.push_back("speed_zuigao_5");
+    classes_name.push_back("speed_zuigao_20");
+    classes_name.push_back("speed_zuigao_30");
+    classes_name.push_back("speed_zuigao_40");
+    classes_name.push_back("speed_zuigao_50");
+    classes_name.push_back("speed_zuigao_60");
+    classes_name.push_back("speed_zuigao_80");
+    classes_name.push_back("speed_zuigao_100");
+    classes_name.push_back("weight");
+    classes_name.push_back("weight_zhou");
+    for (int i=0; i<classes_num; i++) {
+        
+        classes.push_back(i);
+    }
+
+    std::vector<string> train_class_folder = std::vector<string>();
+    std::vector<string> test_class_folder = std::vector<string>();
+
+    for(int i=0; i<classes_name.size(); i++) {
+
+        train_class_folder.push_back(folder_name + "/train/" + classes_name[i]);
+        test_class_folder.push_back(folder_name + "/test/" + classes_name[i]);
+    }
+    
+    
+
+    //std::vector<string> files = std::vector<string>();
+
+    // std::vector<string> train_positive_files = std::vector<string>();
+    // std::vector<string> train_negative_files = std::vector<string>();
+    // std::vector<string> test_positive_files = std::vector<string>();
+    // std::vector<string> test_negative_files = std::vector<string>();
+    
+    training_images = std::vector<matrix<rgb_pixel> >();
+
+    for(int i=0; i<classes.size(); i++) {
+
+        loadImageFileIntoDLibImages_one_dir(train_class_folder[i], training_images, training_labels, classes[i]);
+    }
+
+    // loadImageFileIntoDLibImages_one_dir(train_positive_folder, training_images, training_labels, 1);
+    // loadImageFileIntoDLibImages_one_dir(train_negative_folder, training_images, training_labels, 0);
+
+    // image_window my_window1(training_images[0], "image 0");
+    // my_window1.wait_until_closed();
+
+    // image_window my_window2(training_images[10], "image 10");
+    // my_window2.wait_until_closed();
+
+    testing_images = std::vector<matrix<rgb_pixel> >();
+    // loadImageFileIntoDLibImages_one_dir(test_positive_folder, testing_images, testing_labels, 1);
+    // loadImageFileIntoDLibImages_one_dir(test_negative_folder, testing_images, testing_labels, 0);  
+    
+    for(int i=0; i<classes.size(); i++) {
+
+        loadImageFileIntoDLibImages_one_dir(test_class_folder[i], testing_images, testing_labels, classes[i]);
+    }
+
+}
+
 void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_pixel> >& dlib_images,
      std::vector<unsigned long>& dlib_labels, unsigned long label) {
 
@@ -77,7 +152,5 @@ void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_p
 
     cout << "images size is " << dlib_images.size() << endl;
     cout << "labels size is " << dlib_labels.size() << endl;
-
-
 
 }
