@@ -1,0 +1,15 @@
+height
+limit_shiru
+limit_tongxing
+speed_zuidi_50
+speed_zuidi_60
+speed_zuigao_5
+speed_zuigao_20
+speed_zuigao_30
+speed_zuigao_40
+speed_zuigao_50
+speed_zuigao_60
+speed_zuigao_80
+speed_zuigao_100
+weight
+weight_zhou

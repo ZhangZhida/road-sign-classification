@@ -17,3 +17,4 @@ int getdir (string dir, std::vector<string> &files)
     closedir(dp);
     return 0;
 }
+

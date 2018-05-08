@@ -17,6 +17,10 @@
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <iostream>
+#include <fstream>  
+#include <stdlib.h> 
+
 using namespace std;
 using namespace dlib;
 
@@ -24,3 +28,5 @@ using namespace dlib;
 std::string classify_label(cv::Mat cv_img);
 
 dlib::matrix<dlib::rgb_pixel> loadOneOpenCVImage(cv::Mat cv_img);
+
+std::vector<string> read_classes_list(string filename);

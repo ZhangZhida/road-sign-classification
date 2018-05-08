@@ -24,15 +24,23 @@ string classify_label(cv::Mat cv_img) {
     net_type net;
     net.clean();
 
+    // 加载标签类别
+    std::string classes_list_filename = "../../executable/resource/classList.txt";
+    std::vector<std::string> classes_list = read_classes_list(classes_list_filename);
+
+
     // 加载模型数据
-    deserialize("road_sign_network_multiclass.dat") >> net;
+    deserialize("../../executable/resource/road_sign_network_multiclass_0508.dat") >> net;
 
     // 预测
     std::vector<matrix<rgb_pixel> > dlib_imgs;
     dlib_imgs.push_back(dlib_img);
     std::vector<unsigned long> predicted_labels = net(dlib_imgs);
 
-    return to_string(predicted_labels[0]);
+    // 将输出的unsigned long转化为类别名称
+    string label_name = classes_list[predicted_labels[0] ];
+
+    return label_name;
 
 }
 
@@ -62,3 +70,28 @@ matrix<rgb_pixel> loadOneOpenCVImage(cv::Mat cv_img) {
     
 }
 
+
+std::vector<std::string> read_classes_list(std::string filename){
+
+    char buffer[256];
+    ifstream in(filename);
+    std::vector<std::string> classes_list;
+
+    if(!in.is_open()) {
+
+        cout << "Error opening the file! " << endl;
+        return classes_list ;
+    }
+
+    
+    while(!in.eof()) {
+
+        in.getline(buffer, 100);
+        //cout << buffer << endl;
+        string one_class(buffer);
+        classes_list.push_back(one_class);
+    }
+    in.close();
+
+    return classes_list;
+}
