@@ -28,4 +28,7 @@ target_link_libraries(dnn_mmod_find_cars_ex dlib::dlib)
 add_executable(dnn_mmod_train_find_cars_ex dnn_mmod_train_find_cars_ex.cpp)
 target_link_libraries(dnn_mmod_train_find_cars_ex dlib::dlib)
 
+add_executable(road_sign_classification_multiclass_run road_sign_classification_multiclass_run.cpp)
+target_link_libraries(road_sign_classification_multiclass_run Road_sign_classification_multiclass_run_interface dlib::dlib)
+
 
