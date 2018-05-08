@@ -43,26 +43,12 @@ void loadImagesMulticlass(const string& folder_name,
     std::vector<matrix<rgb_pixel> > & training_images,
     std::vector<unsigned long>& training_labels, 
     std::vector<matrix<rgb_pixel> > & testing_images,
-    std::vector<unsigned long>& testing_labels) {
+    std::vector<unsigned long>& testing_labels,
+    std::vector<std::string> classes_name) {
 
     std::vector<unsigned long> classes = std::vector<unsigned long>();
-    std::vector<std::string> classes_name = std::vector<std::string>();
-    int classes_num = 15;
-    classes_name.push_back("height");
-    classes_name.push_back("limit_shiru");
-    classes_name.push_back("limit_tongxing");
-    classes_name.push_back("speed_zuidi_50");
-    classes_name.push_back("speed_zuidi_60");
-    classes_name.push_back("speed_zuigao_5");
-    classes_name.push_back("speed_zuigao_20");
-    classes_name.push_back("speed_zuigao_30");
-    classes_name.push_back("speed_zuigao_40");
-    classes_name.push_back("speed_zuigao_50");
-    classes_name.push_back("speed_zuigao_60");
-    classes_name.push_back("speed_zuigao_80");
-    classes_name.push_back("speed_zuigao_100");
-    classes_name.push_back("weight");
-    classes_name.push_back("weight_zhou");
+    int classes_num = classes_name.size();
+
     for (int i=0; i<classes_num; i++) {
         
         classes.push_back(i);
@@ -153,4 +139,29 @@ void loadImageFileIntoDLibImages_one_dir(string folder, std::vector<matrix<rgb_p
     cout << "images size is " << dlib_images.size() << endl;
     cout << "labels size is " << dlib_labels.size() << endl;
 
+}
+
+std::vector<std::string> read_class_list(std::string filename){
+
+    char buffer[256];
+    ifstream in(filename);
+    std::vector<std::string> classes_list;
+
+    if(!in.is_open()) {
+
+        cout << "Error opening the file! " << endl;
+        return classes_list ;
+    }
+
+    
+    while(!in.eof()) {
+
+        in.getline(buffer, 100);
+        //cout << buffer << endl;
+        string one_class(buffer);
+        classes_list.push_back(one_class);
+    }
+    in.close();
+
+    return classes_list;
 }

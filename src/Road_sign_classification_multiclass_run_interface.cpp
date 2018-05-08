@@ -26,7 +26,7 @@ string classify_label(cv::Mat cv_img) {
 
     // 加载标签类别
     std::string classes_list_filename = "../../executable/resource/classList.txt";
-    std::vector<std::string> classes_list = read_classes_list(classes_list_filename);
+    std::vector<std::string> classes_list = get_classes_list(classes_list_filename);
 
 
     // 加载模型数据
@@ -71,7 +71,7 @@ matrix<rgb_pixel> loadOneOpenCVImage(cv::Mat cv_img) {
 }
 
 
-std::vector<std::string> read_classes_list(std::string filename){
+std::vector<std::string> get_classes_list(std::string filename){
 
     char buffer[256];
     ifstream in(filename);

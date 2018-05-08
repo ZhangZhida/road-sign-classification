@@ -29,4 +29,4 @@ std::string classify_label(cv::Mat cv_img);
 
 dlib::matrix<dlib::rgb_pixel> loadOneOpenCVImage(cv::Mat cv_img);
 
-std::vector<string> read_classes_list(string filename);
+std::vector<std::string> get_classes_list(std::string filename);
